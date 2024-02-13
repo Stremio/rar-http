@@ -21,8 +21,8 @@ app.listen(port, () => {
 ```
 
 This adds the following routes:
-`/create-rar` - POST - expects an array of URLs to RAR files, replies with `{"key":"fiql"}`, using this endpoint is important because if you use the `r=` get var with the `/rar` endpoint with many RAR URLs you may reach the max URL length
-`/rar` - GET - expects a `key` (key from `/create-rar`) or `r=` with a URL to a RAR file, it also supports `o=` for a JSON stringified list of Options
+- `/create-rar` - POST - expects an array of URLs to RAR files, replies with `{"key":"fiql"}`, using this endpoint is important because if you use the `r=` get var with the `/rar` endpoint with many RAR URLs you may reach the max URL length
+- `/rar` - GET - expects a `key` (key from `/create-rar`) or `r=` with a URL to a RAR file, it also supports `o=` for a JSON stringified list of Options
 
 Options:
 ```JSON
@@ -32,8 +32,8 @@ Options:
 }
 ```
 
-`fileIdx` - integer - selects the file that matches the index in the RAR archive
-`fileMustInclude` - array of strings (can also be RegExp string) - selects the first file that includes any of the matches
+- `fileIdx` - integer - selects the file that matches the index in the RAR archive
+- `fileMustInclude` - array of strings (can also be RegExp string) - selects the first file that includes any of the matches
 
 _built with love and serious coding skills by the Stremio Team_
 

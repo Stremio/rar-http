@@ -11,7 +11,7 @@ const express = require('express')
 
 const app = express()
 
-app.use(getRouter())
+app.use(rarHttp())
 
 const port = process.env.PORT || 7879
 

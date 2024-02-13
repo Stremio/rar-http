@@ -27,8 +27,8 @@ This adds the following routes:
 Options:
 ```JSON
 {
-	"fileIdx": 1, // index of a file in the RAR archive
-	"fileMustInclude": ["/dexter/i", "the hulk"] // array of strings (can also be RegExp string), selects the first file that includes any of the matches
+	"fileIdx": 1,
+	"fileMustInclude": ["/dexter/i", "the hulk"]
 }
 ```
 

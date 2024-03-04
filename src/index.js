@@ -10,7 +10,7 @@ if (require.main === module) {
 	const port = process.env.PORT || 7879
 
 	app.listen(port, () => {
-	  console.log(`http://127.0.0.1:${port}/rar`)
+	  console.log(`http://127.0.0.1:${port}/stream`)
 	})
 } else {
 	module.exports = getRouter

@@ -10,7 +10,7 @@ app.use(bodyParser.json())
 
 function getRouter() {
 
-	app.post('/create-rar', (req, res) => {
+	app.post('/create', (req, res) => {
 		if (!Array.isArray(req.body))
 			res.status(500).send('Cannot parse JSON data')
 		const key = store.set(req.body)
@@ -21,7 +21,7 @@ function getRouter() {
 		res.json({ key })
 	})
 
-	app.head('/rar', async (req, res) => {
+	app.head('/stream', async (req, res) => {
 		const rarInnerFile = await getRarStream(req)
 		const head = {
 			'Accept-Ranges': 'bytes',
@@ -32,7 +32,7 @@ function getRouter() {
 		res.end()
 	})
 
-	app.get('/rar', async (req, res) => {
+	app.get('/stream', async (req, res) => {
 		const rarInnerFile = await getRarStream(req)
 		const fileSize = rarInnerFile.length
 		const range = req.headers.range

@@ -36,8 +36,8 @@ app.listen(port, () => {
 ```
 
 This adds the following routes:
-- `/create` - POST - expects an array of URLs to RAR files, replies with `{"key":"fiql"}`, using this endpoint is important because if you use the `r=` get var with the `/stream` endpoint with many RAR URLs you may reach the max URL length
-- `/stream` - GET - expects a `key` (key from `/create`) or `r=` with a URL to a RAR file, it also supports `o=` for a JSON stringified list of [Options](#options)
+- `/create` - POST - expects an array of URLs to RAR files, replies with `{"key":"fiql"}`
+- `/stream` - GET - expects a `key=` (key from `/create`), it also supports `o=` for a JSON stringified list of [Options](#options)
 
 
 ### Streams

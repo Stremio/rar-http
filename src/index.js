@@ -8,6 +8,8 @@ module.exports = {
 		return store.set(rarUrls)
 	},
 	stream: (key, opts) => {
+		if (!key)
+			throw Error('Missing "key"')
 		return getRarStream({
 			// we use the key for the url as this
 			// is only used as an ID for the stream

@@ -5,9 +5,11 @@ const getRarStream = require('./getRarStream')
 module.exports = {
 	router: getRouter,
 	create: rarUrls => {
+		if (!rarUrls || !Array.isArray(rarUrls))
+			throw Error('"rarUrls" is undefined or not an array')
 		return store.set(rarUrls)
 	},
-	stream: (key, opts) => {
+	file: (key, opts) => {
 		if (!key)
 			throw Error('Missing "key"')
 		return getRarStream({

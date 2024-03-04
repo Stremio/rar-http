@@ -12,7 +12,7 @@ npm install
 npm start
 ```
 
-HTTP server routes are explained at the [Router]() docs
+HTTP server routes are explained at the [Router](#router) docs
 
 
 ## Programatic Usage
@@ -37,7 +37,7 @@ app.listen(port, () => {
 
 This adds the following routes:
 - `/create` - POST - expects an array of URLs to RAR files, replies with `{"key":"fiql"}`, using this endpoint is important because if you use the `r=` get var with the `/stream` endpoint with many RAR URLs you may reach the max URL length
-- `/stream` - GET - expects a `key` (key from `/create`) or `r=` with a URL to a RAR file, it also supports `o=` for a JSON stringified list of [Options]()
+- `/stream` - GET - expects a `key` (key from `/create`) or `r=` with a URL to a RAR file, it also supports `o=` for a JSON stringified list of [Options](#options)
 
 
 ### Streams
@@ -60,7 +60,7 @@ async function getRarStream() {
 }
 ```
 
-`rarHttp.stream(key, opts)` supports the same [Options]() as the `/stream` endpoint, it is optional to set `opts`
+`rarHttp.stream(key, opts)` supports the same [Options](#options) as the `/stream` endpoint, `key` is required, but `opts` is optional
 
 
 ### Options

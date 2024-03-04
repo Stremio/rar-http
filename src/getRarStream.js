@@ -21,19 +21,23 @@ function parseQuery(req) {
       }
       return el
     })
+  return { opts, query: req.query }
+}
+
+function getRarUrls(query) {
   let rarUrls = []
-  let key = req.query.key
+  let key = query.key
   if (key && store.get(key)) {
     rarUrls = store.get(key)
   } else {
     // there is an issue here, as there is such a thing as an url that is too long
     // it would be cropped in this case and some rar parts could be missing..
     // using /create-rar to get a token prior to using the /rar endpoint solves this
-    rarUrls = req.query.r || []
+    rarUrls = query.r || []
     if (typeof rarUrls === 'string')
       rarUrls = [rarUrls]
   }
-  return { opts, rarUrls }
+  return rarUrls
 }
 
 const streamRar = async (urls, opts = {}) => {
@@ -81,8 +85,9 @@ const streamRar = async (urls, opts = {}) => {
 }
 
 async function getRarStream(req) {
-  const query = parseQuery(req)
-  rarStreams[req.url] = rarStreams[req.url] || await streamRar(query.rarUrls, query.opts)
+  const { opts, query } = parseQuery(req)
+  const rarUrls = getRarUrls(query)
+  rarStreams[req.url] = rarStreams[req.url] || await streamRar(rarUrls, opts)
   return rarStreams[req.url]
 }
 

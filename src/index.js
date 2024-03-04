@@ -1,17 +1,21 @@
+const store = require('./store')
 const getRouter = require('./getRouter')
+const getRarStream = require('./getRarStream')
 
-if (require.main === module) {
-	const express = require('express')
-
-	const app = express()
-
-	app.use(getRouter())
-
-	const port = process.env.PORT || 7879
-
-	app.listen(port, () => {
-	  console.log(`http://127.0.0.1:${port}/stream`)
-	})
-} else {
-	module.exports = getRouter
+module.exports = {
+	router: getRouter,
+	create: rarUrls => {
+		return store.set(rarUrls)
+	},
+	stream: (key, opts) => {
+		return getRarStream({
+			// we use the key for the url as this
+			// is only used as an ID for the stream
+			url: key,
+			query: {
+				o: JSON.stringify(opts || {}),
+				key,
+			}
+		})
+	}
 }

@@ -19,7 +19,8 @@ const getContentLengthFromRange = async function(url) {
 }
 
 const getContentLengthFromHead = async function(url) {
-	// used as fallback, getContentLengthFromRange is better
+	// used as fallback, getContentLengthFromRange is better because
+	// needle seems to have a bug that retrieves the entire body
 	return new Promise((resolve, reject) => {
 		needle.head(url, { 'follow_max': 5 }, (err, resp, body) => {
 		  if (!err && resp.statusCode === 200) {

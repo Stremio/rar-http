@@ -30,6 +30,8 @@ const urlToFileMedia = async function(url) {
 						range.end = ''
 					opts.headers = { range: `bytes=${range.start}-${range.end}` }
 		  		}
+		  		// we cannot use node-fetch here because
+		  		// createReadStream is expected to be synchronous
 		  		return needle.get(url, opts)
 		  	},
 		  }

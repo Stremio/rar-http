@@ -58,10 +58,12 @@ async function getRarStream() {
 		maxFiles: 1
 	})
 
-	file.createReadStream({
+	const stream = await file.createReadStream({
 		start: 0,
 		end: file.length - 1
-	}).pipe(
+	})
+
+	stream.pipe(
 		fs.createWriteStream(`./${file.name}`)
 	)
 }
@@ -92,10 +94,10 @@ Options:
 
 #### Methods:
 
-| Method                                         | Description                                                             |
-| ---------------------------------------------- | ----------------------------------------------------------------------- |
-| createReadStream({start: number, end: number}) | Returns a `Readable` stream. The start and end interval is inclusive.   |
-| readToEnd                                      | Returns a Promise with a Buffer containing all the content of the file. |
+| Method                                         | Description                                                                            |
+| ---------------------------------------------- | -------------------------------------------------------------------------------------- |
+| createReadStream({start: number, end: number}) | Returns a Promise with a `Readable` stream. The start and end interval is inclusive.   |
+| readToEnd                                      | Returns a Promise with a Buffer containing all the content of the file.                |
 
 #### Properties:
 

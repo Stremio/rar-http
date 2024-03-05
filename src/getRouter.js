@@ -37,24 +37,23 @@ function getRouter() {
 		let start = 0
 		let end = fileSize-1
 
-	    res.setHeader('Accept-Ranges', 'bytes')
-	    res.setHeader('Content-Type', getContentType(rarInnerFile))
+		res.setHeader('Accept-Ranges', 'bytes')
+		res.setHeader('Content-Type', getContentType(rarInnerFile))
 
 		if (Object.values(range || {}).length) {
 			const parts = range.replace(/bytes=/, '').split('-');
-		    start = parseInt(parts[0], 10) || 0;
-		    end = parts[1] ? parseInt(parts[1], 10) : fileSize-1;
-		    res.statusCode = 206
+			start = parseInt(parts[0], 10) || 0;
+			end = parts[1] ? parseInt(parts[1], 10) : fileSize-1;
+			res.statusCode = 206
 			res.setHeader('Content-Range', `bytes ${start}-${end}/${fileSize}`)
-		    const chunksize = (end - start) + 1
+			const chunksize = (end - start) + 1
 			res.setHeader('Content-Length', chunksize+'')
 		} else {
-		    res.statusCode = 200
+			res.statusCode = 200
 			res.setHeader('Content-Length', fileSize+'')
 		}
-		rarInnerFile
-		.createReadStream({ start, end })
-	    .pipe(res)
+		const stream = await rarInnerFile.createReadStream({ start, end })
+		stream.pipe(res)
 	})
 
 	return router

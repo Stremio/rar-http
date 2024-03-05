@@ -1,4 +1,4 @@
-const needle = require('needle')
+const fetch = require('node-fetch')
 const getContentLength = require('./getContentLength')
 
 const urlToFileMedia = async function(url) {
@@ -21,8 +21,8 @@ const urlToFileMedia = async function(url) {
 		const file = {
 			length: parseInt(contentLength),
 			name: fileName,
-			createReadStream: (range) => {
-				const opts = { 'follow_max': 5 }
+			createReadStream: async (range) => {
+				const opts = { 'follow': 5 }
 				if (Object.values(range).length) {
 					range.start = range.start || 0
 					range.end = range.end || 0
@@ -30,9 +30,8 @@ const urlToFileMedia = async function(url) {
 						range.end = ''
 					opts.headers = { range: `bytes=${range.start}-${range.end}` }
 		  		}
-		  		// we cannot use node-fetch here because
-		  		// createReadStream is expected to be synchronous
-		  		return needle.get(url, opts)
+		  		const resp = await fetch(url, opts)
+		  		return resp.body
 		  	},
 		  }
 		  resolve(file)

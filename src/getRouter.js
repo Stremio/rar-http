@@ -14,11 +14,9 @@ function getRouter() {
 		if (!Array.isArray(req.body))
 			res.status(500).send('Cannot parse JSON data')
 		const key = store.set(req.body)
-		const head = {
-			'Content-Length': JSON.stringify({ key }).length+'',
-			'Content-Type': 'application/json',
-		}
-		res.json({ key })
+		res.setHeader('Content-Length', JSON.stringify({ key }).length+'')
+		res.setHeader('Content-Type', 'application/json')
+		res.end(JSON.stringify({ key }))
 	})
 
 	router.get('/stream', async (req, res) => {

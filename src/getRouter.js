@@ -4,11 +4,11 @@ const getRarStream = require('./getRarStream')
 const getContentType = require('./getContentType')
 const store = require('./store')
 
-const router = Router();
-
-router.use(bodyParser.json())
-
 function getRouter() {
+
+	const router = Router()
+
+	router.use(bodyParser.json())
 
 	router.post('/create', (req, res) => {
 		if (!Array.isArray(req.body))
@@ -23,8 +23,8 @@ function getRouter() {
 
 	router.get('/stream', async (req, res) => {
 		const rarInnerFile = await getRarStream(req)
-		if (req.method === "HEAD") {
-			res.statusCode = 200
+		if (req.method === 'HEAD') {
+			res.statusCode = 204
 			res.setHeader('Accept-Ranges', 'bytes')
 			res.setHeader('Content-Length', rarInnerFile.length+'')
 			res.setHeader('Content-Type', getContentType(rarInnerFile))

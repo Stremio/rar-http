@@ -54,20 +54,12 @@ const streamRar = async (urls, opts = {}) => {
 
   rarStreamOpts.filter = function(name, idx) {
     if ((opts.fileMustInclude || []).length) {
-      if (opts.fileMustInclude.find(reg => {
+      return !!opts.fileMustInclude.find(reg => {
         reg = typeof reg === 'string' ? new RegExp(reg) : reg
         return reg.test(name || '')
-      })) {
-        return true
-      } else {
-        return false
-      }
+      })
     } else if (opts.hasOwnProperty('fileIdx')) {
-      if (opts.fileIdx === idx) {
-        return true
-      } else {
-        return false
-      }
+      return opts.fileIdx === idx
     } else {
       return true
     }

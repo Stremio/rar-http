@@ -9,7 +9,7 @@
   "dependencies": {
     "needle": "2.4.0",
     "router": "^1.3.1",
-    "rar-stream": "Stremio/rar-stream#c8d39f9a3a59c83d6b04f76b5c25fe656dcdd37e",
+    "rar-stream": "Stremio/rar-stream#c41a8443cfbdbbf389c36bb7270b6803d68392a3",
     "mime": "1.3.6",
     "body-parser": "1.19.0"
   },

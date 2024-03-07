@@ -4,7 +4,7 @@ const getContentLengthFromRange = async function(url) {
 	// this works better than getContentLengthFromHead
 	// which i have seen fail by retrieving the full file body
 	return new Promise((resolve, reject) => {
-		needle.get(url, { 'follow_max': 5, headers: { range: `bytes=0-1` } }, (err, resp, body) => {
+		needle.get(url, { 'follow_max': 5, rejectUnauthorized: false, headers: { range: `bytes=0-1` } }, (err, resp, body) => {
 		  if (!err && [200,206].includes(resp.statusCode)) {
 		  	let contentLength = false
 			  	if ((resp.headers['content-range'] || '').includes('/')) {
@@ -22,7 +22,7 @@ const getContentLengthFromHead = async function(url) {
 	// used as fallback, getContentLengthFromRange is better because
 	// needle seems to have a bug that retrieves the entire body
 	return new Promise((resolve, reject) => {
-		needle.head(url, { 'follow_max': 5 }, (err, resp, body) => {
+		needle.head(url, { 'follow_max': 5, rejectUnauthorized: false }, (err, resp, body) => {
 		  if (!err && resp.statusCode === 200) {
 		      if (!resp.headers['accept-ranges'] || !resp.headers['accept-ranges'].includes('bytes')) {
 		      	reject(Error('RAR stream does not accept byte range'))

@@ -22,7 +22,7 @@ const urlToFileMedia = async function(url) {
 			length: parseInt(contentLength),
 			name: fileName,
 			createReadStream: (range) => {
-				const opts = { 'follow_max': 5 }
+				const opts = { 'follow_max': 5, rejectUnauthorized: false }
 				if (Object.values(range).length) {
 					range.start = range.start || 0
 					range.end = range.end || 0

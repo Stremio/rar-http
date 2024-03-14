@@ -12,7 +12,7 @@ const urlToFileMedia = async function(url) {
 			return
 		}
 		let fileName = url.split('/').pop()
-		if ((fileName || '').includes('.r')) {
+		if ((fileName || '').includes('.')) {
 			fileName = decodeURIComponent(fileName)
 			if (fileName.includes('?'))
 				fileName = fileName.split('?')[0]

@@ -1,6 +1,7 @@
 const { RarFilesPackage } = require('rar-stream')
 const urlToFileMedia = require('./urlToFileMedia')
 const store = require('./store')
+const safeStatelessRegex = require('safe-stateless-regex')
 
 const rarStreams = {}
 
@@ -13,7 +14,7 @@ function parseQuery(req) {
   } catch(e) {}
   if ((opts.fileMustInclude || []).length)
     opts.fileMustInclude = opts.fileMustInclude.map(el => {
-      if (isRegex.test(el)) {
+      if ((el || '').match(isRegex)) {
         const parts = isRegex.exec(el)
         try {
           return new RegExp(parts[1],parts[2])
@@ -56,7 +57,7 @@ const streamRar = async (urls, opts = {}) => {
     if ((opts.fileMustInclude || []).length) {
       return !!opts.fileMustInclude.find(reg => {
         reg = typeof reg === 'string' ? new RegExp(reg) : reg
-        return reg.test(name || '')
+        return safeStatelessRegex(name || '', reg, 500)
       })
     } else if (opts.hasOwnProperty('fileIdx')) {
       return opts.fileIdx === idx

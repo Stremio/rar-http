@@ -20,7 +20,15 @@ function getRouter() {
 	})
 
 	router.get('/stream', async (req, res) => {
-		const rarInnerFile = await getRarStream(req)
+		let rarInnerFile
+		try {
+			rarInnerFile = await getRarStream(req)
+		} catch(e) {
+			console.error(e)
+			res.statusCode = 500
+			res.end()
+			return
+		}
 		if (req.method === 'HEAD') {
 			res.statusCode = 204
 			res.setHeader('Accept-Ranges', 'bytes')

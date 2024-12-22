@@ -58,9 +58,15 @@ function getRouter() {
 		    res.statusCode = 200
 			res.setHeader('Content-Length', fileSize+'')
 		}
-		rarInnerFile
+		const readable = await rarInnerFile
 		.createReadStream({ start, end })
-	    .pipe(res)
+
+		req.on('close', function () {
+			readable.stream.request.abort()
+		})
+
+		readable.pipe(res)
+
 	})
 
 	return router

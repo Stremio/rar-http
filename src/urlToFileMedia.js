@@ -1,15 +1,21 @@
-const request = require('request')
+const needle = require('needle')
 const getContentLength = require('./getContentLength')
 
 const urlToFileMedia = async function(url) {
 	return new Promise(async (resolve, reject) => {
 		let contentLength = false
-		try {
-			contentLength = await getContentLength(url)
-		} catch(e) {
-			console.error(e)
-			reject(e)
-			return
+		if (Array.isArray(url) && url.length === 2) {
+			contentLength = url[1]
+			url = url[0]
+		}
+		if (!contentLength) {
+			try {
+				contentLength = await getContentLength(url)
+			} catch(e) {
+				console.error(e)
+				reject(e)
+				return
+			}
 		}
 		let fileName = url.split('/').pop()
 		if ((fileName || '').includes('.')) {
@@ -22,7 +28,7 @@ const urlToFileMedia = async function(url) {
 			length: parseInt(contentLength),
 			name: fileName,
 			createReadStream: (range) => {
-				const opts = { url, followRedirect: true, maxRedirects: 5, strictSSL: false }
+				const opts = { follow_max: 5, rejectUnauthorized: false }
 				if (Object.values(range).length) {
 					range.start = range.start || 0
 					range.end = range.end || 0
@@ -30,7 +36,7 @@ const urlToFileMedia = async function(url) {
 						range.end = ''
 					opts.headers = { range: `bytes=${range.start}-${range.end}` }
 		  		}
-		  		return request(opts)
+		  		return needle.get(url, opts)
 		  	},
 		  }
 		  resolve(file)

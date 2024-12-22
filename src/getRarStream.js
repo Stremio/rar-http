@@ -2,6 +2,14 @@ const { RarFilesPackage } = require('rar-stream')
 const urlToFileMedia = require('./urlToFileMedia')
 const store = require('./store')
 const safeStatelessRegex = require('safe-stateless-regex')
+const namedQueue = require('named-queue')
+
+const q = new namedQueue(async (task, cb) => {
+  const { opts, query } = task
+  const rarUrls = getRarUrls(query)
+  rarStreams[task.url] = rarStreams[task.url] || await streamRar(rarUrls, opts)
+  cb(rarStreams[task.url])
+}, 10)
 
 const rarStreams = {}
 
@@ -77,11 +85,20 @@ const streamRar = async (urls, opts = {}) => {
 
 }
 
+function promiseRarStream(task) {
+  return new Promise((resolve, reject) => {
+    task.id = task.query.key
+    q.push(task, (rarStream) => {
+      resolve(rarStream)
+    })
+  })
+}
+
 async function getRarStream(req) {
-  const { opts, query } = parseQuery(req)
-  const rarUrls = getRarUrls(query)
-  rarStreams[req.url] = rarStreams[req.url] || await streamRar(rarUrls, opts)
-  return rarStreams[req.url]
+  const task = parseQuery(req)
+  task.url = req.url
+  rarStream = await promiseRarStream(task)
+  return rarStream
 }
 
 module.exports = getRarStream

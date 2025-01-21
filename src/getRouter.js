@@ -55,7 +55,7 @@ function getRouter() {
 		    const chunksize = (end - start) + 1
 			res.setHeader('Content-Length', chunksize+'')
 		} else {
-		    res.statusCode = 200
+			res.statusCode = 200
 			res.setHeader('Content-Length', fileSize+'')
 		}
 		const readable = await rarInnerFile
